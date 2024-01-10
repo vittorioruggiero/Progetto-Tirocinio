@@ -95,13 +95,9 @@ public class HttpRequest {
 							reverseGeocodedEndLocation = getLocationByCoordinates(endLocation.getLat(), endLocation.getLng());
 							
 							if(checkLocationIsInCampania(reverseGeocodedStartLocation) && checkLocationIsInCampania(reverseGeocodedEndLocation)) {
-								System.out.println("\n");
-								
 								listaTratteCampaniaProvvisoria.add(step);
 							}
 							else {
-								System.out.println("/n");
-								
 								listaTratteNonCoperteProvvisoria.add(step);
 							}
 						}
