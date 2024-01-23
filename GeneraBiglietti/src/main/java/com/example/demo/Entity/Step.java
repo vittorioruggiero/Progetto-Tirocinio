@@ -1,13 +1,17 @@
 package com.example.demo.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Step {
 
-	private Location start_location;
-	private Location end_location;
-	private String travel_mode;
+	@JsonProperty("start_location")
+	private Location startLocation;
+	@JsonProperty("end_location")
+	private Location endLocation;
+	@JsonProperty("travel_mode")
+	private String travelMode;
 	
 	public Step() {
 		
@@ -15,33 +19,33 @@ public class Step {
 	
 	public Step(Location startLocation, Location endLocation, String travelMode) {
 		super();
-		this.start_location = startLocation;
-		this.end_location = endLocation;
-		this.travel_mode = travelMode;
+		this.startLocation = startLocation;
+		this.endLocation = endLocation;
+		this.travelMode = travelMode;
 	}
 
-	public Location getStart_location() {
-		return start_location;
+	public Location getStartLocation() {
+		return startLocation;
 	}
 
-	public void setStart_location(Location startLocation) {
-		this.start_location = startLocation;
+	public void setStartLocation(Location startLocation) {
+		this.startLocation = startLocation;
 	}
 
-	public Location getEnd_location() {
-		return end_location;
+	public Location getEndLocation() {
+		return endLocation;
 	}
 
-	public void setEnd_location(Location endLocation) {
-		this.end_location = endLocation;
+	public void setEndLocation(Location endLocation) {
+		this.endLocation = endLocation;
 	}
 
-	public String getTravel_mode() {
-		return travel_mode;
+	public String getTravelMode() {
+		return travelMode;
 	}
 
-	public void setTravel_mode(String travel_mode) {
-		this.travel_mode = travel_mode;
+	public void setTravelMode(String travel_mode) {
+		this.travelMode = travel_mode;
 	}
 	
 }

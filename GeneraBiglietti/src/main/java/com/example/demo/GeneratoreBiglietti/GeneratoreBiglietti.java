@@ -1,4 +1,4 @@
-package com.example.demo.Utility;
+package com.example.demo.GeneratoreBiglietti;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 //NON ANCORA COMPLETATA O USATA
-public class GeneratorePercorsi {
+public class GeneratoreBiglietti {
 	
 	private HttpRequest httpRequest;
 	private LinkedList<Step> listaTratteCampaniaProvvisoria = new LinkedList<Step>();
@@ -24,28 +24,53 @@ public class GeneratorePercorsi {
 	private ArrayList<Step> listaTratteCampania = new ArrayList<Step>();
 	private ArrayList<Step> listaTratteNonCoperte = new ArrayList<Step>();
 
-	public GeneratorePercorsi() {
+	public GeneratoreBiglietti() {
 		
 	}
 	
-	public String getPercorsi(String origine, String destinazione) {
+	public String generaBiglietti(String origine, String destinazione) {
 		
 		String percorsiJSON;
-		ArrayList<Step> steps = null;
+		ArrayList<Route> routes = null;
 		ArrayList<Leg> legs = null;
+		ArrayList<Step> steps = null;
 		
 		httpRequest = new HttpRequest();
 		percorsiJSON = httpRequest.getPercorsi(origine, destinazione);
 		
-		legs = estraiLegs(percorsiJSON);
+		routes = estraiRoutes(percorsiJSON);
 		
-		for(Leg leg : legs) {
+		for(Route route : routes) {
 			
-			steps = leg.getSteps();
+			legs = route.getLegs();
 			
-			riempiListeProvvisorie(steps);
-			unisciStep(listaTratteCampaniaProvvisoria, listaTratteCampania);
-			unisciStep(listaTratteNonCoperteProvvisoria, listaTratteNonCoperte);
+			for(Leg leg : legs) {
+				
+				steps = leg.getSteps();
+				
+				riempiListeProvvisorie(steps);
+				unisciStep(listaTratteCampaniaProvvisoria, listaTratteCampania);
+				unisciStep(listaTratteNonCoperteProvvisoria, listaTratteNonCoperte);
+				
+			}
+			
+		}
+		
+		System.out.println("\nLista tratte Campania: ");
+		
+		for(Step step : listaTratteCampania) {
+			
+			System.out.println("\nstart location: \nlat: " + step.getStartLocation().getLatitude() + "\nlng: " + step.getStartLocation().getLongitude());
+			System.out.println("\nend location: \nlat: " + step.getEndLocation().getLatitude() + "\nlng: " + step.getEndLocation().getLongitude());
+			
+		}
+		
+		System.out.println("\nLista tratte non coperte: ");
+		
+		for(Step step : listaTratteNonCoperte) {
+			
+			System.out.println("\nstart location: \nlat: " + step.getStartLocation().getLatitude() + "\nlng: " + step.getStartLocation().getLongitude());
+			System.out.println("\nend location: \nlat: " + step.getEndLocation().getLatitude() + "\nlng: " + step.getEndLocation().getLongitude());
 			
 		}
 		
@@ -53,12 +78,10 @@ public class GeneratorePercorsi {
 		
 	}
 	
-	public ArrayList<Leg> estraiLegs(String percorsiJSON) {
+	public ArrayList<Route> estraiRoutes(String percorsiJSON) {
 		
 		ListaPercorsi listaPercorsi = null;
-		
-		ArrayList<Route> routes;
-		ArrayList<Leg> legs = null;
+		ArrayList<Route> routes = null;
 		
 		try {
 			
@@ -66,19 +89,14 @@ public class GeneratorePercorsi {
 			
 			routes = listaPercorsi.getRoutes();
 			
-			for(Route route : routes) {
-				
-				legs = route.getLegs();
-				
-			}
-			
 		} catch (JsonMappingException e) {
 			e.printStackTrace();
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
 		
-		return legs;
+		return routes;
+		
 	}
 	
 	public void riempiListeProvvisorie(ArrayList<Step> steps) {
@@ -88,15 +106,15 @@ public class GeneratorePercorsi {
 		
 		for(Step step : steps) {
 			
-			if(!(step.getTravel_mode()).equals("WALKING")) {
+			if(!(step.getTravelMode()).equals("WALKING")) {
 				
-				startLocation = step.getStart_location();
-				endLocation = step.getEnd_location();
+				startLocation = step.getStartLocation();
+				endLocation = step.getEndLocation();
 				
 				httpRequest = new HttpRequest();
 				
-				reverseGeocodedStartLocation = httpRequest.getLocationByCoordinates(startLocation.getLat(), startLocation.getLng());
-				reverseGeocodedEndLocation = httpRequest.getLocationByCoordinates(endLocation.getLat(), endLocation.getLng());
+				reverseGeocodedStartLocation = httpRequest.getLocationByCoordinates(startLocation.getLatitude(), startLocation.getLongitude());
+				reverseGeocodedEndLocation = httpRequest.getLocationByCoordinates(endLocation.getLatitude(), endLocation.getLongitude());
 				
 				if(checkLocationIsInCampania(reverseGeocodedStartLocation) && checkLocationIsInCampania(reverseGeocodedEndLocation)) {
 					listaTratteCampaniaProvvisoria.add(step);
@@ -113,7 +131,7 @@ public class GeneratorePercorsi {
 	public void unisciStep(LinkedList<Step> listaTratteProvvisoria, ArrayList<Step> listaTratteFinale) {
 		
 		if(listaTratteProvvisoria.size()>1) {
-			listaTratteFinale.add(new Step(listaTratteProvvisoria.getFirst().getStart_location(), listaTratteProvvisoria.getLast().getEnd_location(), "TRANSIT"));
+			listaTratteFinale.add(new Step(listaTratteProvvisoria.getFirst().getStartLocation(), listaTratteProvvisoria.getLast().getEndLocation(), "TRANSIT"));
 		}
 		else if(!listaTratteProvvisoria.isEmpty()) {
 			listaTratteFinale.add(listaTratteProvvisoria.getFirst());

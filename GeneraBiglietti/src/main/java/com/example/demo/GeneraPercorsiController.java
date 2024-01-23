@@ -4,21 +4,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.GeneratoreBiglietti.GeneratoreBiglietti;
+
 @RestController
 public class GeneraPercorsiController {
 
 	
-	@GetMapping("/generaBiglietti/getPercorsi")
+	@GetMapping("/generaBiglietti")
 		public String getPercorsi(@RequestParam("origine") String origine,
 					                @RequestParam("destinazione") String destinazione) {
 		
-		String percorsiJSON;
-		HttpRequest request = new HttpRequest();
+		GeneratoreBiglietti generatoreBiglietti = new GeneratoreBiglietti();
 		
-		percorsiJSON = request.getPercorsi(origine, destinazione);
+		return generatoreBiglietti.generaBiglietti(origine, destinazione);
 		
-		// utility.gestisciTratte(percorsiJSON);
-		
-		return percorsiJSON;
 	}
 }

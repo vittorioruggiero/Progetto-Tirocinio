@@ -1,12 +1,15 @@
 package com.example.demo.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Location {
 
-	private String lat;
-	private String lng;
+	@JsonProperty("lat")
+	private String latitude;
+	@JsonProperty("lng")
+	private String longitude;
 	
 	public Location() {
 		
@@ -14,24 +17,24 @@ public class Location {
 	
 	public Location(String latitude, String longitude) {
 		super();
-		this.lat = latitude;
-		this.lng = longitude;
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 
-	public String getLat() {
-		return lat;
+	public String getLatitude() {
+		return latitude;
 	}
 
-	public void setLat(String latitude) {
-		this.lat = latitude;
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
 	}
 
-	public String getLng() {
-		return lng;
+	public String getLongitude() {
+		return longitude;
 	}
 
-	public void setLng(String longitude) {
-		this.lng = longitude;
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
 	}
 	
 }
