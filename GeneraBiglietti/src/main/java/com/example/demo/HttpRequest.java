@@ -32,7 +32,7 @@ public class HttpRequest {
 		headers.set("origine", origine);
 		headers.set("destinazione", destinazione);
 		
-		HttpEntity<String> request = new HttpEntity<String>(headers);
+		HttpEntity<String> request = new HttpEntity<>(headers);
 		ResponseEntity<String> response = this.restTemplate.exchange(directionsUrl, HttpMethod.GET, request, String.class);
 		
 		if (response.getStatusCode() == HttpStatus.OK) {
@@ -57,7 +57,7 @@ public class HttpRequest {
 		headers.set("latitude", latitude);
 		headers.set("longitude", longitude);
 		
-		HttpEntity<String> request = new HttpEntity<String>(headers);
+		HttpEntity<String> request = new HttpEntity<>(headers);
 		ResponseEntity<String> response = this.restTemplate.exchange(reverseGeocodingUrl, HttpMethod.GET, request, String.class);
 		
 		if (response.getStatusCode() == HttpStatus.OK) {
