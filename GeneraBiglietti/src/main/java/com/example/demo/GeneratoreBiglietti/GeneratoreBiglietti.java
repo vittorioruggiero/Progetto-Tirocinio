@@ -7,7 +7,6 @@ import java.util.List;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.HttpRequest;
 import com.example.demo.DAO.Tariffa_DAO;
 import com.example.demo.DAO.FromOrToNA_DAO;
 import com.example.demo.DAO.OrigToDestAC_DAO;
@@ -21,6 +20,7 @@ import com.example.demo.Entity.MongoDB.FromOrToNA;
 import com.example.demo.Entity.MongoDB.OrigToDestAC;
 import com.example.demo.Entity.MongoDB.OrigToDestNA;
 import com.example.demo.Entity.MongoDB.Tariffa;
+import com.example.demo.HTTP.HttpRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
